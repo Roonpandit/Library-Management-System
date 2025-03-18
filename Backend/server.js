@@ -8,7 +8,7 @@ const app = express();
 app.use(cors({
     origin: [
         "http://localhost:5173", // Development
-        "https://login-demo-system.netlify.app" // Production
+        "https://book-and-author.vercel.app/" // Production
     ],
     credentials: true // ✅ Allow cookies, authentication tokens
 }));
