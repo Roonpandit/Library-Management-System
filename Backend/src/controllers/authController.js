@@ -39,7 +39,7 @@ const login = async (req, res) => {
     if (!isValid) return res.status(400).json({ message: "Wrong password" });
 
     const token = generateToken(user);
-    const redirectPath = user.role === "admin" ? "/admin" : "/dashboard";
+    const redirectPath = user.role === "admin" ? "/admin" : "/user";
 
     res.json({ token, role: user.role, redirectPath });
   } catch (err) {
