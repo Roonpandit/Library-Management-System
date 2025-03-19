@@ -31,10 +31,15 @@ router.post("/", verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-/**
- * ✅ Update a book by ID (Admin only)
- * Prevents duplicate titles
- */
+
+router.get("/", async (req, res) => {
+    try {
+        const books = await Book.find(); // Fetch all books from the database
+        res.json(books);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
 router.put("/:id", verifyToken, isAdmin, async (req, res) => {
     try {
         const { title, author, genre, publicationYear, description } = req.body;
