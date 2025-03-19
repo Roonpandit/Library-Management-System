@@ -69,21 +69,22 @@ const refreshTokenHandler = async (req, res) => {
   if (!refreshToken) return res.status(401).json({ message: "Refresh token required" });
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-    
-    // ✅ Fetch user role from DB using userId from decoded token
-    const user = await User.findById(decoded.userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+      const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+      
+      // 🔹 Fetch user from DB
+      const user = await User.findById(decoded.userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
 
-    const newAccessToken = jwt.sign(
-      { userId: user._id, role: user.role }, // ✅ Include role
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-    );
+      // ✅ Ensure new access token contains the role
+      const newAccessToken = jwt.sign(
+          { userId: user._id, role: user.role },  // 🔹 Role included
+          process.env.JWT_SECRET,
+          { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+      );
 
-    res.json({ accessToken: newAccessToken, role: user.role }); // ✅ Return role
+      res.json({ accessToken: newAccessToken, role: user.role }); // 🔹 Return role
   } catch (err) {
-    return res.status(403).json({ message: "Invalid refresh token" });
+      return res.status(403).json({ message: "Invalid refresh token" });
   }
 };
 
