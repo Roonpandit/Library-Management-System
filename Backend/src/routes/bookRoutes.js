@@ -31,7 +31,9 @@ router.post("/", verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-
+/** 
+ * ✅ Get all books (Public)
+ */
 router.get("/", async (req, res) => {
     try {
         const books = await Book.find(); // Fetch all books from the database
@@ -40,6 +42,10 @@ router.get("/", async (req, res) => {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 });
+
+/** 
+ * ✅ Get a single book by ID (Public)
+ */
 router.get("/:id", async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
@@ -53,6 +59,10 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 });
+
+/** 
+ * ✅ Update a book (Admin only)
+ */
 router.put("/:id", verifyToken, isAdmin, async (req, res) => {
     try {
         const { title, author, genre, publicationYear, description } = req.body;
@@ -61,7 +71,6 @@ router.put("/:id", verifyToken, isAdmin, async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // ✅ Directly update without checking for duplicate title
         const updatedBook = await Book.findByIdAndUpdate(
             req.params.id,
             { title: title.trim(), author, genre, publicationYear, description },
@@ -79,8 +88,8 @@ router.put("/:id", verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-/**
- * ✅ Delete a book by ID (Admin only)
+/** 
+ * ✅ Delete a book (Admin only)
  */
 router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
     try {
