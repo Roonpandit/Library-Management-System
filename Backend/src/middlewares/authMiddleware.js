@@ -1,16 +1,20 @@
-
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(403).json({ message: "Access Denied: No Token Provided" });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: "Invalid or Expired Token" });
+  if (!token) {
+    return res.status(403).json({ message: "Access Denied: No Token Provided" });
+  }
 
-    console.log("✅ Decoded Token:", user); // Log the token payload
-    req.user = user;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Invalid or Expired Token" });
+    }
+
+    console.log("✅ Decoded Token:", decoded); // Log the token payload
+    req.user = decoded; // Store decoded token data in request
     next();
   });
 };
