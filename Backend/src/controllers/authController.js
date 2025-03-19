@@ -64,21 +64,27 @@ const login = async (req, res) => {
   }
 };
 
-const refreshTokenHandler = (req, res) => {
+const refreshTokenHandler = async (req, res) => {
   const { refreshToken } = req.body;
   if (!refreshToken) return res.status(401).json({ message: "Refresh token required" });
 
-  jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, decoded) => {
-    if (err) return res.status(403).json({ message: "Invalid refresh token" });
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+    
+    // ✅ Fetch user role from DB using userId from decoded token
+    const user = await User.findById(decoded.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const newAccessToken = jwt.sign(
-      { userId: decoded.userId, role: decoded.role },
+      { userId: user._id, role: user.role }, // ✅ Include role
       process.env.JWT_SECRET,
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );
 
-    res.json({ accessToken: newAccessToken });
-  });
+    res.json({ accessToken: newAccessToken, role: user.role }); // ✅ Return role
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid refresh token" });
+  }
 };
 
 module.exports = { signup, login, refreshTokenHandler };
