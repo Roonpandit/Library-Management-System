@@ -4,6 +4,7 @@ const cors = require('cors');
 require('./src/config/db'); // Database connection
 const authRoutes = require('./src/routes/authRoutes');
 const bookRoutes = require('./src/routes/bookRoutes');
+const favoriteRoutes = require('./src/routes/favoriteRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // ✅ API Routes
 app.use('/auth', authRoutes);
 app.use('/books', bookRoutes);
+app.use('/favorites', favoriteRoutes);
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
