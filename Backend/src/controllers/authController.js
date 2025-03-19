@@ -53,7 +53,12 @@ const login = async (req, res) => {
     if (!isValid) return res.status(400).json({ message: "Wrong password" });
 
     const { accessToken, refreshToken } = generateTokens(user);
-    res.json({ accessToken, refreshToken, role: user.role });
+
+    // ✅ Determine redirect path based on role
+    const redirectPath = user.role === "admin" ? "/admin" : "/dashboard";
+
+    res.json({ accessToken, refreshToken, role: user.role, redirectPath });
+
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
