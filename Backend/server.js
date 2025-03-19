@@ -1,8 +1,10 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+require('./src/config/db'); // Database connection
 const authRoutes = require('./src/routes/authRoutes');
-require('./src/config/db'); // Import and establish database connection
+const bookRoutes = require('./src/routes/bookRoutes');
+
 const app = express();
 
 app.use(cors({
@@ -10,16 +12,17 @@ app.use(cors({
         "http://localhost:5173", // Development
         "https://book-and-author.vercel.app/" // Production
     ],
-    credentials: true // ✅ Allow cookies, authentication tokens
+    credentials: true
 }));
-  
+
 app.use(express.json());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/books', bookRoutes);
 
 // Start server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
