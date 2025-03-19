@@ -3,17 +3,31 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 require('dotenv').config();
 
+// Helper function to generate tokens
 const generateTokens = (user) => {
+  // Ensure the user object has the required fields
+  if (!user._id || !user.role) {
+    throw new Error("User object missing required fields");
+  }
+
+  // Create access token with user ID and role
   const accessToken = jwt.sign(
-    { userId: user._id, role: user.role },
+    { 
+      userId: user._id.toString(), 
+      role: user.role 
+    },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m' }
   );
 
+  // Create refresh token with user ID and role (including role in refresh token)
   const refreshToken = jwt.sign(
-    { userId: user._id },
+    { 
+      userId: user._id.toString(),
+      role: user.role // Include role in refresh token
+    },
     process.env.REFRESH_SECRET,
-    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY || '7d' }
   );
 
   return { accessToken, refreshToken };
@@ -23,7 +37,7 @@ const signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
-    console.log("Signup request received:", req.body);
+    console.log("Signup request received:", { name, email, role });
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
@@ -32,10 +46,21 @@ const signup = async (req, res) => {
 
     const user = await User.create({ name, email, password: hashedPassword, role: role || "user" });
 
-    console.log("User created successfully:", user);
+    console.log("User created successfully:", { id: user._id, role: user.role });
 
     const { accessToken, refreshToken } = generateTokens(user);
-    res.status(201).json({ message: "User registered successfully", accessToken, refreshToken, role: user.role });
+    
+    // Debug token contents
+    const decodedAccess = jwt.decode(accessToken);
+    console.log("🔹 Access token payload:", decodedAccess);
+    
+    res.status(201).json({ 
+      message: "User registered successfully", 
+      accessToken, 
+      refreshToken, 
+      role: user.role,
+      userId: user._id 
+    });
   } catch (err) {
     console.error("Signup error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -53,38 +78,64 @@ const login = async (req, res) => {
     if (!isValid) return res.status(400).json({ message: "Wrong password" });
 
     const { accessToken, refreshToken } = generateTokens(user);
+    
+    // Debug token contents
+    const decodedAccess = jwt.decode(accessToken);
+    console.log("🔹 Login - Access token payload:", decodedAccess);
 
-    // ✅ Determine redirect path based on role
+    // Determine redirect path based on role
     const redirectPath = user.role === "admin" ? "/admin" : "/dashboard";
 
-    res.json({ accessToken, refreshToken, role: user.role, redirectPath });
+    res.json({ 
+      accessToken, 
+      refreshToken, 
+      role: user.role,
+      userId: user._id,
+      redirectPath 
+    });
 
   } catch (err) {
+    console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
 const refreshTokenHandler = async (req, res) => {
   const { refreshToken } = req.body;
-  if (!refreshToken) return res.status(401).json({ message: "Refresh token required" });
+  
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Refresh token required" });
+  }
 
   try {
-      const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-      
-      // 🔹 Fetch user from DB
-      const user = await User.findById(decoded.userId);
-      if (!user) return res.status(404).json({ message: "User not found" });
-
-      // ✅ Ensure new access token contains the role
-      const newAccessToken = jwt.sign(
-          { userId: user._id, role: user.role },  // 🔹 Role included
-          process.env.JWT_SECRET,
-          { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-      );
-
-      res.json({ accessToken: newAccessToken, role: user.role }); // 🔹 Return role
+    // Verify the refresh token
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+    console.log("🔹 Refresh token decoded:", decoded);
+    
+    // Fetch user from DB
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      console.warn("⛔ User not found:", decoded.userId);
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Generate new tokens
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = generateTokens(user);
+    
+    // Debug new token contents
+    const decodedNew = jwt.decode(newAccessToken);
+    console.log("🔹 New access token payload:", decodedNew);
+    
+    // Return new tokens and user info
+    res.json({ 
+      accessToken: newAccessToken, 
+      refreshToken: newRefreshToken,
+      role: user.role,
+      userId: user._id 
+    });
   } catch (err) {
-      return res.status(403).json({ message: "Invalid refresh token" });
+    console.error("⛔ Refresh token error:", err);
+    return res.status(403).json({ message: "Invalid refresh token" });
   }
 };
 
