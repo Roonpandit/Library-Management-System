@@ -4,7 +4,7 @@ const cors = require('cors');
 require('./src/config/db'); // Database connection
 const authRoutes = require('./src/routes/authRoutes');
 const bookRoutes = require('./src/routes/bookRoutes');
-const favoriteRoutes = require('./src/routes/favoriteRoutes');
+const favoriteRoutes = require('./src/routes/favouriteRoutes');
 
 const app = express();
 
