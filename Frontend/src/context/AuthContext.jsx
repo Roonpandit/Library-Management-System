@@ -6,63 +6,59 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-  const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken"));
-  const [role, setRole] = useState(localStorage.getItem("role"));
   const navigate = useNavigate();
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  const [role, setRole] = useState(localStorage.getItem("role"));
 
+  // ✅ Check token expiration every 5 seconds
   useEffect(() => {
     const checkTokenExpiration = () => {
       if (!accessToken) return;
 
-      const decodedToken = jwtDecode(accessToken);
-      const currentTime = Date.now() / 1000; // Convert to seconds
+      try {
+        const decodedToken = jwtDecode(accessToken);
+        const currentTime = Date.now() / 1000;
 
-      if (decodedToken.exp < currentTime) {
-        console.log("Access token expired. Attempting refresh...");
-        refreshAccessToken();
+        if (decodedToken.exp < currentTime) {
+          console.log("⏳ Access token expired. Logging out...");
+          logout();
+        }
+      } catch (error) {
+        console.error("❌ Error decoding token:", error);
+        logout();
       }
     };
 
-    const interval = setInterval(checkTokenExpiration, 5000); // Check every 5 seconds
+    const interval = setInterval(checkTokenExpiration, 5000);
     return () => clearInterval(interval);
   }, [accessToken]);
 
-  const refreshAccessToken = async () => {
-    try {
-      const res = await axios.post("https://login-focv.onrender.com/auth/refresh", { refreshToken });
-      setAccessToken(res.data.accessToken);
-      localStorage.setItem("accessToken", res.data.accessToken);
-    } catch (error) {
-      console.log("Session expired. Logging out.");
-      logout();
+  const login = (token, role) => {
+    if (!token) {
+      console.error("❌ Token is missing! Login failed.");
+      return;
     }
+  
+    setAccessToken(token);
+    setRole(role);
+    localStorage.setItem("accessToken", token);  // Keep "accessToken" for local storage consistency
+    localStorage.setItem("role", role);
   };
 
-  const login = (newAccessToken, newRefreshToken, userRole) => {
-    setAccessToken(newAccessToken);
-    setRefreshToken(newRefreshToken);
-    setRole(userRole);
-
-    localStorage.setItem("accessToken", newAccessToken);
-    localStorage.setItem("refreshToken", newRefreshToken);
-    localStorage.setItem("role", userRole);
-  };
-
+  // ✅ Logout function (when token expires)
   const logout = () => {
+    console.log("🔴 Logging out user...");
+    
     setAccessToken(null);
-    setRefreshToken(null);
     setRole(null);
-
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
     localStorage.removeItem("role");
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, login, logout, role }}>
+    <AuthContext.Provider value={{ accessToken, role, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

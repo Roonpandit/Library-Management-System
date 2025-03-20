@@ -1,0 +1,111 @@
+.user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+    padding: 20px;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+  }
+  
+  .user-container .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    
+  }
+  
+  .user-container .filters input,
+  .user-container  .filters select {
+    padding: 8px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+  }
+  
+  .user-container .book-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .user-container .book-card {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    min-width: 300px;
+    flex-direction: column;
+    height: 100%; /* Ensures all cards have equal height */
+}
+
+.user-container .btnns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto; /* Pushes buttons to the bottom */
+    padding-top: 10px; /* Adds some space above */
+}
+
+.user-container .book-card button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #007bff;
+}
+
+.user-container .heart-icon {
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+  
+  .user-container .heart-icon:hover {
+    opacity: 0.7;
+  }
+  
+  .user-container .book-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  
+  .user-container .popup-content {
+    text-align: center;
+  }
+  
+  .user-container .popup-content button {
+    margin-top: 10px;
+    padding: 2px 5px;
+  }
+
+  .user-container .pagination {
+    margin-top: 20px;
+  }
+  
+  .user-container .pagination button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .user-container .pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }

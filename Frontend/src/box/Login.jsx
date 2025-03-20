@@ -2,47 +2,69 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State for error message
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      setError("All fields are required.");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const res = await axios.post("https://login-focv.onrender.com/auth/login", { email, password });
+      const res = await axios.post(import.meta.env.VITE_LOGIN_ENDPOINT, { email, password });
+      const { token, role, redirectPath } = res.data;
 
-      //  Extract values correctly
-      const { accessToken, refreshToken, role, redirectPath } = res.data;
-
-      login(accessToken, refreshToken, role);
-
-      // ✅ Use `redirectPath` from response
-      if (redirectPath) {
-        navigate(redirectPath);
-      } else {
-        console.error("No redirect path found in response");
+      if (!token) {
+        throw new Error("No token received.");
       }
+
+      login(token, role);
+      navigate(redirectPath);
     } catch (err) {
-      if (err.response) {
-        setError(err.response.data.message); // Set error message from backend
-      } else {
-        setError("Login failed. Please try again.");
-      }
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
+      {error && <p>{error}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>} {/* ✅ Show error if exists */}
+      <input
+        type="email"
+        placeholder="Email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value.toLowerCase())}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin} disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
+      </button>
+
+      <p className="signup-link">
+        Don't have an account?{" "}
+        <span onClick={() => navigate("/signup")}>Create</span>
+      </p>
     </div>
   );
 };
