@@ -1,7 +1,5 @@
 /* EditBook.css - Modern Form Styling */
 
-
-
 /* Main container */
 .edit-book-container {
   max-width: 800px;
@@ -25,7 +23,7 @@
 }
 
 .edit-book-container h2::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -42,15 +40,14 @@ form {
   gap: 1.5rem;
 }
 
-/* Full-width elements */
 form textarea,
 form button,
 form input[name="title"] {
   grid-column: 1 / -1;
 }
 
-/* Form controls styling */
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 0.875rem 1rem;
   border: 1px solid var(--gray-light);
@@ -61,29 +58,29 @@ input, textarea {
   color: var(--dark);
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #adb5bd;
 }
 
-/* Textarea specific styling */
 textarea {
   min-height: 150px;
   resize: vertical;
   line-height: 1.5;
 }
 
-/* Input hover state */
-input:hover, textarea:hover {
+input:hover,
+textarea:hover {
   border-color: #c0c5d0;
 }
 
-/* Form labels (optional) */
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -91,7 +88,6 @@ label {
   color: var(--dark);
 }
 
-/* Submit button */
 button[type="submit"] {
   padding: 0.875rem 1.5rem;
   background: linear-gradient(to right, var(--primary), var(--primary-dark));
@@ -112,7 +108,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -141,8 +137,8 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 
-/* Status messages */
-.success, .error {
+.success,
+.error {
   padding: 1rem;
   border-radius: var(--border-radius);
   margin-bottom: 1.5rem;
@@ -151,7 +147,8 @@ button[type="submit"]:disabled {
   animation: slideIn 0.3s ease;
 }
 
-.success::before, .error::before {
+.success::before,
+.error::before {
   position: absolute;
   left: 1rem;
   top: 50%;
@@ -179,7 +176,6 @@ button[type="submit"]:disabled {
   content: "⚠️";
 }
 
-/* Loading state */
 .edit-book-container > p {
   text-align: center;
   padding: 1.5rem;
@@ -203,17 +199,15 @@ button[type="submit"]:disabled {
   animation: spinner 0.8s linear infinite;
 }
 
-/* Field validation styles */
-input:invalid, textarea:invalid {
+input:invalid,
+textarea:invalid {
   border-color: var(--danger);
 }
 
-/* Cool focus effect */
 .form-group {
   position: relative;
 }
 
-/* Input with floating label effect (optional) */
 .form-group label {
   position: absolute;
   top: 0.875rem;
@@ -233,7 +227,6 @@ input:invalid, textarea:invalid {
   color: var(--primary);
 }
 
-/* Custom select styling (if needed) */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
@@ -242,47 +235,60 @@ select {
   padding-right: 2.5rem;
 }
 
-/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes spinner {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Card layout and subtle patterns */
 .edit-book-container::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
   width: 150px;
   height: 150px;
-  background: radial-gradient(circle at top right, var(--primary-light), transparent 70%);
+  background: radial-gradient(
+    circle at top right,
+    var(--primary-light),
+    transparent 70%
+  );
   border-radius: 0 var(--border-radius) 0 0;
   opacity: 0.8;
   pointer-events: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .edit-book-container {
     margin: 1.5rem;
     padding: 1.5rem;
   }
-  
+
   form {
     grid-template-columns: 1fr;
   }
-  
-  form textarea, 
+
+  form textarea,
   form button,
   form input[name="title"] {
     grid-column: 1;
@@ -294,17 +300,18 @@ select {
     margin: 1rem;
     padding: 1rem;
   }
-  
+
   .edit-book-container h2 {
     font-size: 1.5rem;
   }
-  
-  input, textarea, button {
+
+  input,
+  textarea,
+  button {
     font-size: 0.95rem;
   }
 }
 
-/* Return button */
 .return-button {
   display: inline-flex;
   align-items: center;
@@ -325,7 +332,6 @@ select {
   font-size: 1.1rem;
 }
 
-/* Form sections */
 .form-section {
   margin-bottom: 1.5rem;
 }
@@ -339,14 +345,12 @@ select {
   border-bottom: 1px solid var(--gray-light);
 }
 
-/* Form help text */
 .form-help {
   font-size: 0.85rem;
   color: var(--gray);
   margin-top: 0.5rem;
 }
 
-/* Character counter for description */
 .char-counter {
   display: block;
   text-align: right;

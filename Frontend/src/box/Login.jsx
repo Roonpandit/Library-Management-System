@@ -21,7 +21,10 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(import.meta.env.VITE_LOGIN_ENDPOINT, { email, password });
+      const res = await axios.post(import.meta.env.VITE_LOGIN_ENDPOINT, {
+        email,
+        password,
+      });
       const { token, role, redirectPath } = res.data;
 
       if (!token) {
@@ -31,7 +34,9 @@ const Login = () => {
       login(token, role);
       navigate(redirectPath);
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -40,36 +45,34 @@ const Login = () => {
   return (
     <div className="login">
       <div className="login-container">
-      <h2>Login</h2>
-      {error && <p>{error}</p>}
+        <h2>Login</h2>
+        {error && <p>{error}</p>}
 
-      <input
-        type="email"
-        placeholder="Email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value.toLowerCase())}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        required
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value.toLowerCase())}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
-      </button>
+        <button onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
 
-      <p className="signup-link">
-        Don't have an account?{" "}
-        <span onClick={() => navigate("/signup")}>Sign Up</span>
-      </p>
+        <p className="signup-link">
+          Don't have an account?{" "}
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+      </div>
     </div>
-
-    </div>
-    
   );
 };
 

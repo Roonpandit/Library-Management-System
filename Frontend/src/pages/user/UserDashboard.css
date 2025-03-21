@@ -46,16 +46,21 @@
   min-width: 300px;
   flex-direction: column;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Ensures all cards have equal height */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+.user-container .book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .user-container .btnns {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto; /* Pushes buttons to the bottom */
-  padding-top: 10px; /* Adds some space above */
+  margin-top: auto;
+  padding-top: 10px;
 }
 
 .user-container .book-card button {
@@ -75,7 +80,6 @@
   opacity: 0.7;
 }
 
-/* Popup overlay with blur effect */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -135,8 +139,8 @@
   color: white;
   border-radius: 5px;
 }
-.user-container .pagination button:hover {
-color: #007bff;
+.user-container .pagination span {
+  color: white;
 }
 
 .user-container .pagination button:disabled {
@@ -144,7 +148,6 @@ color: #007bff;
   cursor: not-allowed;
 }
 
-/* Add a class for the body when popup is open */
 body.popup-open {
-  overflow: hidden; /* Prevents scrolling when popup is open */
+  overflow: hidden;
 }

@@ -1,5 +1,4 @@
-/* Navbar.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 * {
   margin: 0;
@@ -18,7 +17,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .navbar-logo {
@@ -27,7 +26,7 @@
   letter-spacing: 1px;
   color: white;
   text-transform: uppercase;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .navbar-links {
@@ -46,7 +45,7 @@
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 0;
   height: 2px;
@@ -74,7 +73,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .logout-btn:hover {
@@ -84,7 +83,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Hamburger menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -104,16 +102,15 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
-  
+
   .navbar {
     padding: 1rem 2rem;
   }
-  
+
   .navbar-links {
     position: fixed;
     top: 0;
@@ -128,29 +125,19 @@
     transition: right 0.4s ease;
     z-index: 1000;
   }
-  
+
   .navbar-links.active {
     right: 0;
   }
-  
-  /* .logout-btn {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    text-align: center;
-  } */
-  
-  /* Hamburger animation */
+
   .hamburger.active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
   }
-  
+
   .hamburger.active span:nth-child(2) {
     opacity: 0;
   }
-  
+
   .hamburger.active span:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
   }
@@ -160,7 +147,7 @@
   .navbar-logo {
     font-size: 1.5rem;
   }
-  
+
   .navbar-links {
     width: 80%;
   }

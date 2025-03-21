@@ -10,7 +10,7 @@ const Navbars = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/"); 
+    navigate("/");
   };
 
   const toggleMenu = () => {
@@ -25,16 +25,25 @@ const Navbars = () => {
     <nav className="navbar">
       <div className="navbar-logo">Library</div>
 
-      <div className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+      <div
+        className={`hamburger ${isMenuOpen ? "active" : ""}`}
+        onClick={toggleMenu}
+      >
         <span></span>
         <span></span>
         <span></span>
       </div>
 
-      <div className={`navbar-links ${isMenuOpen ? 'active' : ''}`}>
-        <Link to="/user" className="nav-link" onClick={closeMenu}>Home</Link>
-        <Link to="/liked" className="nav-link" onClick={closeMenu}>Liked</Link>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
+        <Link to="/user" className="nav-link" onClick={closeMenu}>
+          Home
+        </Link>
+        <Link to="/liked" className="nav-link" onClick={closeMenu}>
+          Liked
+        </Link>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </nav>
   );

@@ -1,75 +1,77 @@
-.liked-container { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 20px; 
-  margin: auto; 
-  margin-top: 50px; 
-  text-align: center; 
-} 
- 
-.liked-container .book-grid { 
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: center; 
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-  gap: 15px; 
-  margin-top: 20px; 
-} 
- 
-.liked-container .book-card { 
-  padding: 15px; 
+.liked-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin: auto;
+  margin-top: 50px;
+  text-align: center;
+}
+.liked-container h2 {
+color: white;
+}
+
+.liked-container .book-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.liked-container .book-card {
+  padding: 15px;
   background: linear-gradient(to bottom right, #e8deea, #f18282);
-  border-radius: 5px; 
-  text-align: center; 
-  position: relative; 
-  display: flex; 
-  min-width: 300px; 
-  flex-direction: column; 
-  height: 100%; 
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  min-width: 300px;
+  flex-direction: column;
+  height: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-} 
+}
 
 .liked-container .book-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
- 
-.liked-container .btnns { 
-  margin-top: auto; 
-  padding-top: 10px; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-} 
- 
-.liked-container button { 
-  padding: 5px 10px; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  border: 1px solid #007bff; 
-  background: #007bff; 
-  color: white; 
+
+.liked-container .btnns {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.liked-container button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #007bff;
+  background: #007bff;
+  color: white;
   transition: background 0.3s;
-} 
- 
-.liked-container button:hover { 
-  background: #0056b3; 
-} 
- 
-.liked-container .heart-icon { 
-  font-size: 24px; 
-  cursor: pointer; 
+}
+
+.liked-container button:hover {
+  background: #0056b3;
+}
+
+.liked-container .heart-icon {
+  font-size: 24px;
+  cursor: pointer;
   transition: transform 0.2s;
-} 
+}
 
 .liked-container .heart-icon:hover {
   transform: scale(1.1);
 }
 
-/* Popup overlay with blur effect */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -84,34 +86,32 @@
   justify-content: center;
   z-index: 999;
 }
- 
-.liked-container .book-popup { 
+
+.liked-container .book-popup {
   position: relative;
   background: linear-gradient(to bottom right, #e8deea, #788cb3);
-  padding: 20px; 
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15); 
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   z-index: 1000;
   max-width: 500px;
   width: 90%;
-} 
- 
-.liked-container .popup-content { 
-  text-align: center; 
-} 
- 
-.liked-container .popup-content button { 
-  margin-top: 15px; 
+}
+
+.liked-container .popup-content {
+  text-align: center;
+}
+
+.liked-container .popup-content button {
+  margin-top: 15px;
   padding: 8px 16px;
   transition: background 0.3s, transform 0.2s;
-} 
+}
 
 .liked-container .popup-content button:hover {
   background: #0056b3;
   transform: translateY(-2px);
 }
 
-/* Add a class for the body when popup is open */
 body.popup-open {
-  overflow: hidden; /* Prevents scrolling when popup is open */
-}
+  overflow: hidden; }

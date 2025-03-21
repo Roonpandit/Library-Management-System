@@ -8,7 +8,7 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    role: "user", // Default role
+    role: "user",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");

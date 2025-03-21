@@ -25,7 +25,6 @@ const EditBook = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // ✅ Fetch book details
   useEffect(() => {
     if (accessToken) {
       fetchBook();
@@ -46,7 +45,7 @@ const EditBook = () => {
 
       setFormData(response.data);
     } catch (error) {
-      setError("❌ Failed to load book details.");
+      setError("Failed to load book details.");
       console.error(
         "Error fetching book:",
         error.response?.data || error.message
@@ -56,7 +55,6 @@ const EditBook = () => {
     }
   };
 
-  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,10 +69,10 @@ const EditBook = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      setSuccessMessage("✅ Book updated successfully!");
+      setSuccessMessage("Book updated successfully!");
       setTimeout(() => navigate("/admin"), 1500);
     } catch (error) {
-      setError(error.response?.data?.message || "❌ Failed to update book.");
+      setError(error.response?.data?.message || "Failed to update book.");
       console.error(
         "Error updating book:",
         error.response?.data || error.message
@@ -87,64 +85,69 @@ const EditBook = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="edit-book-container">
-      <h2>Edit Book</h2>
-      {successMessage && <p className="success">{successMessage}</p>}
-      {error && <p className="error">{error}</p>}
+      <Navbar />
+      <div className="edit-book-container">
+        <h2>Edit Book</h2>
+        {successMessage && <p className="success">{successMessage}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Title"
-          required
-        />
-        <input
-          type="text"
-          name="author"
-          value={formData.author}
-          onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-          placeholder="Author"
-          required
-        />
-        <input
-          type="text"
-          name="genre"
-          value={formData.genre}
-          onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
-          placeholder="Genre"
-          required
-        />
-        <input
-          type="number"
-          name="publicationYear"
-          value={formData.publicationYear}
-          onChange={(e) =>
-            setFormData({ ...formData, publicationYear: e.target.value })
-          }
-          placeholder="Year"
-          required
-        />
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-          placeholder="Description"
-          required
-        />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+            placeholder="Title"
+            required
+          />
+          <input
+            type="text"
+            name="author"
+            value={formData.author}
+            onChange={(e) =>
+              setFormData({ ...formData, author: e.target.value })
+            }
+            placeholder="Author"
+            required
+          />
+          <input
+            type="text"
+            name="genre"
+            value={formData.genre}
+            onChange={(e) =>
+              setFormData({ ...formData, genre: e.target.value })
+            }
+            placeholder="Genre"
+            required
+          />
+          <input
+            type="number"
+            name="publicationYear"
+            value={formData.publicationYear}
+            onChange={(e) =>
+              setFormData({ ...formData, publicationYear: e.target.value })
+            }
+            placeholder="Year"
+            required
+          />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            placeholder="Description"
+            required
+          />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Updating..." : "Update"}
-        </button>
-      </form>
-    </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Updating..." : "Update"}
+          </button>
+        </form>
+      </div>
     </>
-    
   );
 };
 

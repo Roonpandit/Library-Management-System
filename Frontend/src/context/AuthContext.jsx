@@ -7,10 +7,11 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken")
+  );
   const [role, setRole] = useState(localStorage.getItem("role"));
 
-  // ✅ Check token expiration every 5 seconds
   useEffect(() => {
     const checkTokenExpiration = () => {
       if (!accessToken) return;
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
           logout();
         }
       } catch (error) {
-        console.error("❌ Error decoding token:", error);
+        console.error("Error decoding token:", error);
         logout();
       }
     };
@@ -35,20 +36,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token, role) => {
     if (!token) {
-      console.error("❌ Token is missing! Login failed.");
+      console.error("Token is missing! Login failed.");
       return;
     }
-  
+
     setAccessToken(token);
     setRole(role);
-    localStorage.setItem("accessToken", token);  // Keep "accessToken" for local storage consistency
+    localStorage.setItem("accessToken", token);
     localStorage.setItem("role", role);
   };
 
-  // ✅ Logout function (when token expires)
   const logout = () => {
-    console.log("🔴 Logging out user...");
-    
+    console.log("Logging out user...");
+
     setAccessToken(null);
     setRole(null);
     localStorage.removeItem("accessToken");
