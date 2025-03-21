@@ -2,15 +2,16 @@
     max-width: 500px;
     margin: 80px auto;
     padding: 20px;
-    background: #ffffff;
+    background: black;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 72%;
   }
   
   .add-book-container h2 {
     text-align: center;
     font-size: 24px;
-    color: #333;
+    color: white;
     margin-bottom: 20px;
   }
   
@@ -22,8 +23,8 @@
   .add-book-container input,
   .add-book-container textarea {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
+    padding: 8px;
+    margin-bottom: 0px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
@@ -35,24 +36,27 @@
   }
   
   .add-book-container button {
-    background: #007bff;
+    background: #9457c7;
     color: white;
     border: none;
-    padding: 12px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    margin-top: 0px;
   }
   
   .add-book-container button:hover {
-    background: #0056b3;
+    background: #8b48ad;
   }
   
   .add-book-container p {
     text-align: center;
     font-size: 14px;
     margin-top: 10px;
+  }
+  .add-book-container ::placeholder {
+    color: #706f6f;
   }
   
   .add-book-container p.error {

@@ -1,43 +1,167 @@
+/* Navbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar-logo {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: white;
+  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.logout-btn:hover {
+  background-color: white;
+  color: #d76d77;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hamburger {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    top: 0;
-    margin: auto;
+  }
+  
+  .navbar {
+    padding: 1rem 2rem;
+  }
+  
+  .navbar-links {
     position: fixed;
-    width: 100%;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background: linear-gradient(to bottom, #3a1c71, #d76d77);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    transition: right 0.4s ease;
     z-index: 1000;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
   }
   
-  .navbar .navbar-logo {
+  .navbar-links.active {
+    right: 0;
+  }
+  
+  /* .logout-btn {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    text-align: center;
+  } */
+  
+  /* Hamburger animation */
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+  
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
     font-size: 1.5rem;
-    font-weight: bold;
   }
   
-  .navbar .navbar-links {
-    display: flex;
-    gap: 20px;
+  .navbar-links {
+    width: 80%;
   }
-  
-  .navbar .nav-link {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-  }
-  .navbar .logout-btn {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .navbar .logout-btn:hover {
-    background-color: darkred;
-  }
+}

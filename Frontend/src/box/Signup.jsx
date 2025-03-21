@@ -2,20 +2,28 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
+
 const Signup = () => {
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    role: "user",
+    role: "user", // Default role
   });
+
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    if (!user.name || !user.email || !user.password) {
+    if (!user.name || !user.email || !user.password || !user.role) {
       setError("All fields are required.");
+      return;
+    }
+
+    if (user.password !== confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
@@ -40,6 +48,14 @@ const Signup = () => {
 
       {error && <p className="error">{error}</p>}
 
+      <select
+        value={user.role}
+        onChange={(e) => setUser({ ...user, role: e.target.value })}
+        required
+      >
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
       <input
         type="text"
         placeholder="Name"
@@ -64,6 +80,14 @@ const Signup = () => {
         value={user.password}
         required
         onChange={(e) => setUser({ ...user, password: e.target.value })}
+      />
+
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        required
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
 
       <button onClick={handleSignup} disabled={loading}>

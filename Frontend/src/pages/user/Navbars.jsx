@@ -1,27 +1,41 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "./Navbars.css";
+
 const Navbars = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/"); 
   };
 
-  return (
-    <nav className="navbars">
-      <div className="navbars-logo">Library</div>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-      <div className="navbars-links">
-        <Link to="/user" className="navs-link">Home</Link>
-        <Link to="/liked" className="navs-link">Liked</Link>
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-logo">Library</div>
+
+      <div className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
 
-      <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      <div className={`navbar-links ${isMenuOpen ? 'active' : ''}`}>
+        <Link to="/user" className="nav-link" onClick={closeMenu}>Home</Link>
+        <Link to="/liked" className="nav-link" onClick={closeMenu}>Liked</Link>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      </div>
     </nav>
   );
 };
