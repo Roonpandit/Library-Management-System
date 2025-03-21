@@ -1,35 +1,16 @@
+// src/routes/bookRoutes.js
 const express = require("express");
 const Book = require("../models/bookModel");
 const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 const upload = require("../middlewares/uploadMiddleware");
 const cloudinary = require("../config/cloudinary");
-const streamifier = require('streamifier');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
 
-// Helper function to upload to Cloudinary with high quality settings
-const uploadToCloudinary = (buffer) => {
-    return new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-            { 
-                folder: "book-covers",
-                quality: "auto:best",
-                fetch_format: "auto",
-                crop: "limit",
-                flags: "preserve_transparency"
-            },
-            (error, result) => {
-                if (error) return reject(error);
-                resolve(result);
-            }
-        );
-        
-        streamifier.createReadStream(buffer).pipe(uploadStream);
-    });
-};
-
 /** 
- * ✅ Create a new book with high quality image (Admin only)
+ * ✅ Create a new book with image (Admin only)
  */
 router.post("/", verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     try {
@@ -57,12 +38,28 @@ router.post("/", verifyToken, isAdmin, upload.single('image'), async (req, res) 
         // Upload image if provided
         if (req.file) {
             try {
-                const result = await uploadToCloudinary(req.file.buffer);
+                // Upload to Cloudinary
+                const result = await cloudinary.uploader.upload(req.file.path, {
+                    folder: "book-covers",
+                    quality: "auto:best",
+                    fetch_format: "auto",
+                    crop: "limit",
+                    flags: "preserve_transparency"
+                });
+                
+                // Add image data to book
                 bookData.image = {
                     url: result.secure_url,
                     publicId: result.public_id
                 };
+                
+                // Remove temporary file
+                fs.unlinkSync(req.file.path);
             } catch (uploadError) {
+                // Clean up the temporary file in case of error
+                if (req.file && req.file.path) {
+                    fs.unlinkSync(req.file.path);
+                }
                 return res.status(400).json({ message: "Image upload failed", error: uploadError.message });
             }
         }
@@ -72,12 +69,16 @@ router.post("/", verifyToken, isAdmin, upload.single('image'), async (req, res) 
         
         res.status(201).json({ message: "Book added successfully", book: newBook });
     } catch (error) {
+        // Clean up any temporary file in case of other errors
+        if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 });
 
 /** 
- * ✅ Update a book with possible high quality image update (Admin only)
+ * ✅ Update a book with possible image update (Admin only)
  */
 router.put("/:id", verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     try {
@@ -111,12 +112,27 @@ router.put("/:id", verifyToken, isAdmin, upload.single('image'), async (req, res
                 }
                 
                 // Upload new image
-                const result = await uploadToCloudinary(req.file.buffer);
+                const result = await cloudinary.uploader.upload(req.file.path, {
+                    folder: "book-covers",
+                    quality: "auto:best",
+                    fetch_format: "auto",
+                    crop: "limit",
+                    flags: "preserve_transparency"
+                });
+                
+                // Update image data
                 updateData.image = {
                     url: result.secure_url,
                     publicId: result.public_id
                 };
+                
+                // Remove temporary file
+                fs.unlinkSync(req.file.path);
             } catch (uploadError) {
+                // Clean up the temporary file in case of error
+                if (req.file && req.file.path) {
+                    fs.unlinkSync(req.file.path);
+                }
                 return res.status(400).json({ message: "Image upload failed", error: uploadError.message });
             }
         }
@@ -129,11 +145,14 @@ router.put("/:id", verifyToken, isAdmin, upload.single('image'), async (req, res
 
         res.json({ message: "Book updated successfully", book: updatedBook });
     } catch (error) {
+        // Clean up any temporary file in case of other errors
+        if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 });
 
-// Other routes remain the same
 /** 
  * ✅ Delete a book and its image (Admin only)
  */
